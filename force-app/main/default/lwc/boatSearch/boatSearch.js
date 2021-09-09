@@ -15,14 +15,17 @@ export default class BoatSearch extends NavigationMixin(LightningElement) {
     // This custom event comes from the form (child)
     searchBoats(event) {
         console.log(event.detail.boatTypeId);
-        isLoading = true;
+        this.isLoading = true;
         getBoats({boatTypeId: event.detail.boatTypeId})
             .then(result => {
+                console.log('success');
+                console.log(result);
                 //const eventLoading
-                isLoading = false;
+                this.isLoading = false;
             })
             .catch(error => {
-
+                console.log('error');
+                this.isLoading = false;
             })
     }
 
