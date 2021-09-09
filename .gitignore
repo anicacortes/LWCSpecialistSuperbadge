@@ -38,3 +38,4 @@ $RECYCLE.BIN/
 .env
 manifest/package.xml
 manifest/*
+.*
