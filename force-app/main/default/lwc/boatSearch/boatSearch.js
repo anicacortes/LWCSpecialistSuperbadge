@@ -11,9 +11,10 @@ export default class BoatSearch extends NavigationMixin(LightningElement) {
     // Handles done loading event
     handleDoneLoading() { }
 
-    // Handles search boat event
     // This custom event comes from the form (child)
-    searchBoats(event) { }
+    searchBoats(event) {
+        console.log(event.detail);
+    }
 
     createNewBoat() {
         this[NavigationMixin.Navigate]({

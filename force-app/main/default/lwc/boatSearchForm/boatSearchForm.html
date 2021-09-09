@@ -1,7 +1,8 @@
-<!--
- - Created by roigan on 9/9/21.
- -->
-
-<!-- Boat Search Form -->
 <template>
+  <lightning-layout>
+    <lightning-layout-item class="slds-align-middle">
+      <lightning-combobox class="slds-align-middle" options={searchOptions} placeholder="All Types"
+                          value={selectedBoatTypeId} onchange={handleSearchOptionChange}></lightning-combobox>
+    </lightning-layout-item>
+  </lightning-layout>
 </template>
