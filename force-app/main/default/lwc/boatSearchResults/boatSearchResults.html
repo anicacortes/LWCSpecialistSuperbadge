@@ -1,7 +1,27 @@
-<!--
- - Created by roigan on 9/9/21.
- -->
-
-<!-- Boat Search Results -->
 <template>
+    <template if:true={boats}>
+        <lightning-tabset>
+            <lightning-tab label="Gallery">
+                <div class="slds-scrollable_y">
+                    <lightning-layout class="slds-align-middle" multiple-rows="true">
+                    <!-- template looping through each boat -->
+                    <template for:each={boats} for:item="boat">
+                        <!-- lightning-layout-item for each boat -->
+                        <lightning-layout-item key={boat.Id}>
+                            <!-- Each BoatTile goes here -->
+                            <c-boat-tile boat={boat} selected-boat-id={boat.Id}></c-boat-tile>
+                        </lightning-layout-item>
+                    </template>
+                    </lightning-layout>
+                </div>
+            </lightning-tab>
+            <lightning-tab label="Boat Editor">
+                <!-- Scrollable div and lightning datatable go here -->
+            </lightning-tab>
+            <lightning-tab label="Boats Near Me">
+                <!-- boatsNearMe component goes here -->
+
+            </lightning-tab>
+        </lightning-tabset>
+    </template>
 </template>

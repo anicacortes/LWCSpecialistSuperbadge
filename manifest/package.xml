@@ -3,6 +3,7 @@
     <types>
         <members>boatTile</members>
         <members>boatSearch</members>
+        <members>boatSearchResults</members>
         <name>LightningComponentBundle</name>
     </types>
     <types>
