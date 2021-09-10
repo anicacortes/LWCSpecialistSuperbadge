@@ -7,10 +7,15 @@ export default class BoatSearch extends NavigationMixin(LightningElement) {
     isLoading = false;
 
     // Handles loading event
-    handleLoading() { }
+    handleLoading() {
+        console.log('parent-spinner true');
+        this.isLoading = true;
+    }
 
     // Handles done loading event
-    handleDoneLoading() { }
+    handleDoneLoading() {
+         this.isLoading = false;
+    }
 
     // This custom event comes from the form (child)
     searchBoats(event) {
