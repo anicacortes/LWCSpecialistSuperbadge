@@ -4,6 +4,8 @@
         <members>boatTile</members>
         <members>boatSearch</members>
         <members>boatSearchResults</members>
+        <members>boatsNearMe</members>
+        <members>boatMap</members>
         <name>LightningComponentBundle</name>
     </types>
     <types>
