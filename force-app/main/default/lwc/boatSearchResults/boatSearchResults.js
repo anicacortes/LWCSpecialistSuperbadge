@@ -9,6 +9,8 @@ const ERROR_VARIANT = 'error';
 
 export default class BoatSearchResults extends LightningElement {
 
+//spinner here?
+
     boats = [];
     selectedBoatId;
     columns = [];
@@ -39,11 +41,13 @@ export default class BoatSearchResults extends LightningElement {
     updateSelectedTile(event) {
         console.log('result parent selected_');
         console.log(event.detail);
+
+        this.selectedBoatId = event.detail;
     }
 
     // Publishes the selected boat Id on the BoatMC.
     sendMessageService(boatId) {
-    // explicitly pass boatId to the parameter recordId
+        // explicitly pass boatId to the parameter recordId
     }
 
     // The handleSave method must save the changes in the Boat Editor
@@ -52,13 +56,13 @@ export default class BoatSearchResults extends LightningElement {
     // Show a toast message with the title
     // clear lightning-datatable draft values
     handleSave(event) {
-    // notify loading
-    const updatedFields = event.detail.draftValues;
-    // Update the records via Apex
-    updateBoatList({data: updatedFields})
-    .then(() => {})
-    .catch(error => {})
-    .finally(() => {});
+        // notify loading
+        const updatedFields = event.detail.draftValues;
+        // Update the records via Apex
+        updateBoatList({data: updatedFields})
+        .then(() => {})
+        .catch(error => {})
+        .finally(() => {});
     }
     // Check the current value of isLoading before dispatching the doneloading or loading custom event
     notifyLoading(isLoading) { }
