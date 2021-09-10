@@ -1,5 +1,4 @@
 import { LightningElement, api } from 'lwc';
-import { loadStyle } from 'lightning/platformResourceLoader';
 
 const TILE_WRAPPER_SELECTED_CLASS = 'tile-wrapper selected';
 const TILE_WRAPPER_UNSELECTED_CLASS = 'tile-wrapper';
@@ -17,18 +16,15 @@ export default class BoatTile extends LightningElement {
     // Getter for dynamically setting the tile class based on whether the
     // current boat is selected
     get tileClass() {
-        return this.selectedBoatId == this.boat.Id ? TILE_WRAPPER_SELECTED_CLASS : TILE_WRAPPER_UNSELECTED_CLASS;
+        return this.selectedBoatId ? TILE_WRAPPER_SELECTED_CLASS : TILE_WRAPPER_UNSELECTED_CLASS;
     }
 
     // Fires event with the Id of the boat that has been selected.
     selectBoat(event) {
         this.selectedBoatId = !this.selectedBoatId;
         console.log('selected boat');
-        console.log(this.boat);
-        console.log(this.boat.Id);
-        console.log(this.selectedBoatId);
 
-        const boatSelectedEvent = new CustomEvent('boatselect', { detail: this.boat.Id });
+        const boatSelectedEvent = new CustomEvent('boatselect', { detail: {boatId : this.boat.Id} });
         this.dispatchEvent(boatSelectedEvent);
 
     }
