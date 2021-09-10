@@ -9,7 +9,7 @@
                         <!-- lightning-layout-item for each boat -->
                         <lightning-layout-item key={boat.Id}>
                             <!-- Each BoatTile goes here -->
-                            <c-boat-tile boat={boat} selected-boat-id={boat.Id}></c-boat-tile>
+                            <c-boat-tile boat={boat} selected-boat-id={boat.Id} onboatselect={updateSelectedTile}></c-boat-tile>
                         </lightning-layout-item>
                     </template>
                     </lightning-layout>

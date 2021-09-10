@@ -6,9 +6,8 @@ const TILE_WRAPPER_UNSELECTED_CLASS = 'tile-wrapper';
 
 export default class BoatTile extends LightningElement {
     @api boat;
-    @api selectedBoatId; //??
+    @api selectedBoatId;
 
-    //backgroundUrl = this.boat.Boat_Image__c;
 
     // Getter for dynamically setting the background image for the picture
     get backgroundStyle() {
@@ -18,21 +17,19 @@ export default class BoatTile extends LightningElement {
     // Getter for dynamically setting the tile class based on whether the
     // current boat is selected
     get tileClass() {
-        return this.selectedBoatId == undefined ? 'tile-wrapper' : 'tile-wrapper selected';
+        return this.selectedBoatId == this.boat.Id ? TILE_WRAPPER_SELECTED_CLASS : TILE_WRAPPER_UNSELECTED_CLASS;
     }
 
     // Fires event with the Id of the boat that has been selected.
     selectBoat(event) {
+        this.selectedBoatId = !this.selectedBoatId;
         console.log('selected boat');
         console.log(this.boat);
+        console.log(this.boat.Id);
         console.log(this.selectedBoatId);
-        console.log(event.target.detail);
-        console.log(event.detail.value);
 
-        //this.boat = ?
-
-        const boatSelectedEvent = new CustomEvent('boatselect', { detail: boat });
-        this.dispatchEvent(searchEvent);
+        const boatSelectedEvent = new CustomEvent('boatselect', { detail: this.boat.Id });
+        this.dispatchEvent(boatSelectedEvent);
 
     }
 }
