@@ -11,14 +11,14 @@ const ICON_STANDARD_USER = 'standard:user';
 export default class BoatsNearMe extends LightningElement {
 
     @api boatTypeId;
-    @track isRendered = true;
+    @track isRendered = false;
     @track mapMarkers = [];
-    isLoading = true;
+    @track isLoading = true;
 
     latitude;
     longitude;
 
-    @wire(getBoatsByLocation, {latitude: '$this.latitude', longitude: '$this.longitude', boatTypeId: '$this.boatTypeId'})
+    @wire(getBoatsByLocation, {latitude: '$latitude', longitude: '$longitude', boatTypeId: '$boatTypeId'})
     wiredBoatsJSON({error, data}) {
         if(data) {
             console.log('>> result from apex location:');
@@ -36,10 +36,10 @@ export default class BoatsNearMe extends LightningElement {
     }
 
     renderedCallback() {
-        if(this.isRendered) {
+        if(!this.isRendered) {
             console.log('>> Rendered true');
             this.isLoading = true;
-            this.isRendered = false;
+            this.isRendered = true;
             this.getLocationFromBrowser();
         }
     }
