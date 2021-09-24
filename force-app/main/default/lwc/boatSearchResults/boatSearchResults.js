@@ -1,15 +1,15 @@
 import { LightningElement, wire } from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent'
+import { APPLICATION_SCOPE,subscribe,MessageContext,unsubscribe } from 'lightning/messageService';
 
 import getBoats from '@salesforce/apex/BoatDataService.getBoats';
 import updateBoatList from '@salesforce/apex/BoatDataService.updateBoatList';
 import { refreshApex } from '@salesforce/apex';
 
-
 const SUCCESS_TITLE = 'Success';
-const MESSAGE_SHIP_IT     = 'Ship it!';
-const SUCCESS_VARIANT     = 'success';
-const ERROR_TITLE   = 'Error';
+const MESSAGE_SHIP_IT = 'Ship it!';
+const SUCCESS_VARIANT = 'success';
+const ERROR_TITLE = 'Error';
 const ERROR_VARIANT = 'error';
 
 const COLUMNS = [
@@ -29,45 +29,57 @@ export default class BoatSearchResults extends LightningElement {
     boatTypeId = '';
     isLoading = false;
 
-    // wired message context
+    // Initialize messageContext for Message Service
+    @wire(MessageContext)
     messageContext;
 
     @wire(getBoats)
     wiredBoats({data, error}) {
         if(data) {
-            console.log('boats success');
-            console.log(data);
+            console.log('>> Got all boats');
             this.boats = data;
         }
     }
 
     // public function that updates the existing boatTypeId property
     // uses notifyLoading
-    searchBoats(boatTypeId) { }
+    searchBoats(boatTypeId) {
+        this.boatTypeId = boatTypeId;
+        this.isLoading = true;
+        this.notifyLoading(this.isLoading);
+    }
 
     // this public function must refresh the boats asynchronously
     // uses notifyLoading
     refresh() {
+        console.log('>> loading = true');
         this.isLoading = true;
         this.notifyLoading(this.isLoading);
         refreshApex(this.boats);
         this.isLoading = false;
-        console.log('done loading, false');
+        console.log('>> loading = false');
         this.notifyLoading(this.isLoading);
 
     }
 
     // this function must update selectedBoatId and call sendMessageService
     updateSelectedTile(event) {
-        console.log('result parent selected_');
+        console.log('>> parent: boat selected');
         console.log(event.detail);
+        console.log(event.target);
 
         this.selectedBoatId = event.detail;
     }
 
     // Publishes the selected boat Id on the BoatMC.
     sendMessageService(boatId) {
-        // explicitly pass boatId to the parameter recordId
+        // explicitly pass boatId to the parameter recordId ??
+        this.subscription = subscribe(
+            this.messageContext,
+            BOATMC,
+            (message) => {this.boatId = message.recordId},
+            { scope: APPLICATION_SCOPE }
+        );
     }
 
     // The handleSave method must save the changes in the Boat Editor
@@ -102,6 +114,7 @@ export default class BoatSearchResults extends LightningElement {
             })
             .finally(() => {});
     }
+
     // Check the current value of isLoading before dispatching the doneloading or loading custom event
     notifyLoading(isLoading) {
          if (isLoading) {
