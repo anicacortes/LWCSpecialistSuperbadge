@@ -14,11 +14,10 @@
 
     <!-- Bottom -->
     <lightning-layout-item size="12" class="slds-p-top_small slds-is-relative">
-      <lightning-spinner if:true={isLoading} alternative-text="Loading" variant="brand"></lightning-spinner>
-
+      <template if:true={isLoading}>
+        <lightning-spinner alternative-text="Loading" variant="brand"></lightning-spinner>
+      </template>
       <c-boat-search-results onloading={handleLoading} ondoneloading={handleDoneLoading}></c-boat-search-results>
-
-      <!-- onloading={handleLoading} ondoneloading={handleDoneLoading} -->
     </lightning-layout-item>
   </lightning-layout>
 </template>

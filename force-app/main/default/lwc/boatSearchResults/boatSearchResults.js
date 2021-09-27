@@ -52,8 +52,10 @@ export default class BoatSearchResults extends LightningElement {
     // uses notifyLoading
     @api
     searchBoats(boatTypeId) {
+        console.log('>> search boats in child');
+        console.log(boatTypeId);
         this.boatTypeId = boatTypeId;
-        this.isLoading = true;
+        this.isLoading = false;
         this.notifyLoading(this.isLoading);
     }
 

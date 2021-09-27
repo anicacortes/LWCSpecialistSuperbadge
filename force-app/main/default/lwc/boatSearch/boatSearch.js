@@ -19,9 +19,12 @@ export default class BoatSearch extends NavigationMixin(LightningElement) {
 
     // This custom event comes from the form (child)
     searchBoats(event) {
+        console.log('>> search boats from parent');
         console.log(event.detail.boatTypeId);
         this.isLoading = true;
-        getBoats({boatTypeId: event.detail.boatTypeId})
+        this.template.querySelector('c-boat-search-results').searchBoats(event.detail.boatTypeId);
+        //searchBoats
+        /*getBoats({boatTypeId: event.detail.boatTypeId})
             .then(result => {
                 console.log('success');
                 console.log(result);
@@ -31,7 +34,7 @@ export default class BoatSearch extends NavigationMixin(LightningElement) {
             .catch(error => {
                 console.log('error');
                 this.isLoading = false;
-            })
+            })*/
     }
 
     createNewBoat() {
