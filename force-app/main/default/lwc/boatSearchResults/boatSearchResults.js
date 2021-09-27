@@ -1,6 +1,8 @@
-import { LightningElement, wire } from 'lwc';
+import { LightningElement, wire, api, track } from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent'
-import { APPLICATION_SCOPE,subscribe,MessageContext,unsubscribe } from 'lightning/messageService';
+
+import { publish, APPLICATION_SCOPE,subscribe,MessageContext,unsubscribe } from 'lightning/messageService';
+import BoatMC from '@salesforce/messageChannel/BoatMessageChannel__c';
 
 import getBoats from '@salesforce/apex/BoatDataService.getBoats';
 import updateBoatList from '@salesforce/apex/BoatDataService.updateBoatList';
@@ -23,7 +25,7 @@ export default class BoatSearchResults extends LightningElement {
 
 //spinner here?
 
-    boats = [];
+    @track boats = [];
     selectedBoatId;
     columns = COLUMNS;
     boatTypeId = '';
@@ -33,16 +35,22 @@ export default class BoatSearchResults extends LightningElement {
     @wire(MessageContext)
     messageContext;
 
-    @wire(getBoats)
+    @wire(getBoats, { boatTypeId : '$boatTypeId'})
     wiredBoats({data, error}) {
         if(data) {
             console.log('>> Got all boats');
             this.boats = data;
         }
+        else {
+            this.boats = undefined;
+        }
+        this.isLoading = false;
+        this.notifyLoading(this.isLoading);
     }
 
     // public function that updates the existing boatTypeId property
     // uses notifyLoading
+    @api
     searchBoats(boatTypeId) {
         this.boatTypeId = boatTypeId;
         this.isLoading = true;
@@ -51,11 +59,11 @@ export default class BoatSearchResults extends LightningElement {
 
     // this public function must refresh the boats asynchronously
     // uses notifyLoading
-    refresh() {
+    async refresh() {
         console.log('>> loading = true');
         this.isLoading = true;
         this.notifyLoading(this.isLoading);
-        refreshApex(this.boats);
+        await refreshApex(this.boats);
         this.isLoading = false;
         console.log('>> loading = false');
         this.notifyLoading(this.isLoading);
@@ -68,18 +76,14 @@ export default class BoatSearchResults extends LightningElement {
         console.log(event.detail);
         console.log(event.target);
 
-        this.selectedBoatId = event.detail;
+        this.selectedBoatId = event.detail.boatId;
+        this.sendMessageService(this.selectedBoatId);
     }
 
     // Publishes the selected boat Id on the BoatMC.
     sendMessageService(boatId) {
         // explicitly pass boatId to the parameter recordId ??
-        this.subscription = subscribe(
-            this.messageContext,
-            BOATMC,
-            (message) => {this.boatId = message.recordId},
-            { scope: APPLICATION_SCOPE }
-        );
+        publish(this.messageContext, BoatMC, { recordId : boatId });
     }
 
     // The handleSave method must save the changes in the Boat Editor
