@@ -2,10 +2,10 @@ import { LightningElement, wire, api } from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
 import { getRecord, getFieldValue } from 'lightning/uiRecordApi';
 
-import Details from '@salesforce/label/c.Details';
-import Full_Details from '@salesforce/label/c.Full_Details';
-import Reviews from '@salesforce/label/c.Reviews';
-import Add_Review from '@salesforce/label/c.Add_Review';
+import labelDetails from '@salesforce/label/c.Details';
+import labelFullDetails from '@salesforce/label/c.Full_Details';
+import labelReviews from '@salesforce/label/c.Reviews';
+import labelAddReview from '@salesforce/label/c.Add_Review';
 import labelPleaseSelectABoat from '@salesforce/label/c.Please_select_a_boat';
 
 import { APPLICATION_SCOPE,subscribe,MessageContext,unsubscribe } from 'lightning/messageService';
@@ -21,13 +21,13 @@ export default class BoatDetailTabs extends NavigationMixin(LightningElement) {
     @api boatId;
     reviews;
 
-    label = {
-        Details,
-        Full_Details,
-        Reviews,
-        Add_Review,
-        labelPleaseSelectABoat
-    };
+     label = {
+        labelDetails,
+        labelReviews,
+        labelAddReview,
+        labelFullDetails,
+        labelPleaseSelectABoat,
+      };
 
     // Private
     subscription = null;
@@ -41,11 +41,25 @@ export default class BoatDetailTabs extends NavigationMixin(LightningElement) {
     // Subscribe to the message channel
     subscribeMC() {
         // local boatId must receive the recordId from the message
+         if(this.subscription) {
+            return;
+         }
+
+        this.subscription = subscribe(
+            this.messageContext,
+            BOATMC,
+            (message) => {
+                this.boatId = message.recordId;
+            },
+            { scope: APPLICATION_SCOPE }
+        );
     }
 
     // Calls subscribeMC()
     connectedCallback() {
         console.log('boat detail tabs connected callback');
+        this.subscribeMC();
+
     }
 
     get boatName() {
@@ -75,5 +89,6 @@ export default class BoatDetailTabs extends NavigationMixin(LightningElement) {
     // Navigates back to the review list, and refreshes reviews component
     handleReviewCreated(event) {
         this.template.querySelector('lightning-tabset').activeTabValue = 'Reviews';
+        this.template.querySelector('c-boat-reviews').refresh();
     }
 }
