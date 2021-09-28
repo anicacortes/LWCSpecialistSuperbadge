@@ -44,7 +44,9 @@ export default class BoatDetailTabs extends NavigationMixin(LightningElement) {
     }
 
     // Calls subscribeMC()
-    connectedCallback() { }
+    connectedCallback() {
+        console.log('boat detail tabs connected callback');
+    }
 
     get boatName() {
         return getFieldValue(this.wiredRecord.data, BOAT_NAME_FIELD);
@@ -71,5 +73,7 @@ export default class BoatDetailTabs extends NavigationMixin(LightningElement) {
     }
 
     // Navigates back to the review list, and refreshes reviews component
-    handleReviewCreated() { }
+    handleReviewCreated(event) {
+        this.template.querySelector('lightning-tabset').activeTabValue = 'Reviews';
+    }
 }

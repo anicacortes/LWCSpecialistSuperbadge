@@ -3,26 +3,29 @@
         <span class="slds-align_absolute-center no-boat-height">{label.labelPleaseSelectABoat}</span>
     </template>
     <template if:true={wiredRecord.data}>
-        <lightning-tabset>
-            <lightning-tab>
-                Details
-                <lightning-card title={boatName} icon-name={detailsTabIconName}>
-                    <lightning-button slot="" label={Full_Details} onclick={navigateToRecordViewPage}></lightning-button>
-                </lightning-card>
+        <lightning-card>
+            <lightning-tabset>
+                <lightning-tab>
+                    Details
+                    <lightning-card title={boatName} icon-name={detailsTabIconName}>
+                        <lightning-button slot="" label={label.Full_Details} onclick={navigateToRecordViewPage}></lightning-button>
+                    </lightning-card>
 
-                <lightning-record-view-form class="slds-nav-vertical_compact" object-api-name="Boat__c" record-id={boatId}>
-                    <lightning-output-field field-name="BoatType__c"></lightning-output-field>
-                    <lightning-output-field field-name="Length__c"></lightning-output-field>
-                    <lightning-output-field field-name="Price__c"></lightning-output-field>
-                    <lightning-output-field field-name="Description__c"></lightning-output-field>
-                </lightning-record-view-form>
-            </lightning-tab>
-            <lightning-tab label={label.Reviews} value={reviews}>
-                <!--            <c-boatReviews></c-boatReviews>-->
-            </lightning-tab>
-            <lightning-tab label={label.Add_Review}>
-                <!--            <c-boatAddReviewForm></c-boatAddReviewForm>-->
-            </lightning-tab>
-        </lightning-tabset>
+                    <lightning-record-view-form class="slds-nav-vertical_compact" object-api-name="Boat__c" record-id={boatId}>
+                        <lightning-output-field field-name="BoatType__c"></lightning-output-field>
+                        <lightning-output-field field-name="Length__c"></lightning-output-field>
+                        <lightning-output-field field-name="Price__c"></lightning-output-field>
+                        <lightning-output-field field-name="Description__c"></lightning-output-field>
+
+                    </lightning-record-view-form>
+                </lightning-tab>
+                <lightning-tab label={label.Reviews} value="Reviews">
+                    <c-boat-reviews></c-boat-reviews>
+                </lightning-tab>
+                <lightning-tab label={label.Add_Review}>
+                    <c-boat-add-review-form boat-id={wiredRecord.data.Id} oncreatereview={handleReviewCreated}></c-boat-add-review-form>
+                </lightning-tab>
+            </lightning-tabset>
+        </lightning-card>
     </template>
 </template>

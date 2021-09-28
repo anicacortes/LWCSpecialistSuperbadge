@@ -13,8 +13,8 @@ const READ_ONLY_CLASS = 'readonly c-rating';
 
 export default class FiveStarRating extends LightningElement {
   //initialize public readOnly and value properties
-  readOnly;
-  value;
+  @api readOnly;
+  @api value;
 
   editedValue;
   isRendered;
@@ -75,7 +75,7 @@ export default class FiveStarRating extends LightningElement {
   // Method to fire event called ratingchange with the following parameter:
   // {detail: { rating: CURRENT_RATING }}); when the user selects a rating
   ratingChanged(rating) {
-    const newRatingEvent = new CustomEvent('ratingchange', { rating: rating });
+    const newRatingEvent = new CustomEvent('ratingchange', { detail: rating });
     this.dispatchEvent(newRatingEvent);
   }
 }
