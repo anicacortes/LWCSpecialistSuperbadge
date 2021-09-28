@@ -16,7 +16,7 @@ export default class BoatAddReviewForm extends LightningElement {
     commentField     = COMMENT_FIELD;
     labelSubject = 'Review Subject';
     labelRating  = 'Rating';
-    @api boatId;
+    boatId;
 
 
     // Public Getter and Setter to allow for logic to run on recordId change

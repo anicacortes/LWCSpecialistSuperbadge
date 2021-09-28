@@ -1,15 +1,18 @@
 import { LightningElement, api } from 'lwc';
+import { refreshApex } from '@salesforce/apex';
+import { NavigationMixin } from 'lightning/navigation';
 
 import getAllReviews from '@salesforce/apex/BoatDataService.getAllReviews';
 
 export default class BoatReviews extends NavigationMixin(LightningElement) {
 
-    @api boatId;
+    boatId;
     boatReviews = [];
-    isLoading;
+    isLoading = false;
     error;
 
     // Public Getter and Setter to allow for logic to run on recordId change
+    @api
     get recordId() {
         return this.boatId;
     }
@@ -35,22 +38,21 @@ export default class BoatReviews extends NavigationMixin(LightningElement) {
     }
 
     get reviewsToShow() {
-        return this.boatReviews ? true : false;
+        return this.boatReviews && this.boatReviews.length > 0 ? true : false;
     }
 
    @api refresh() {
-       this.getReviews();
+       refreshApex(this.getReviews());
    }
 
     navigateToRecord(event) {
-        // Navigate to Account record page
         this[NavigationMixin.Navigate]({
             type: 'standard__recordPage',
             attributes: {
-                "recordId": event.target.dataset.recordId,
-                "objectApiName": "BoatReview__c",
-                "actionName": "view"
-            },
+                recordId: event.target.dataset.recordId,
+                objectApiName: 'User',
+                actionName: 'view'
+            }
         });
     }
 }

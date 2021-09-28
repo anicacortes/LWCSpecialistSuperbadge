@@ -5,9 +5,9 @@
         </div>
     </div>
     <div if:true={reviewsToShow}>
-        <lightning-spinner class="small" variant="brand" alternative-text="Loading" if:true={isLoading}>
-
-        </lightning-spinner>
+        <template if:true={isLoading}>
+            <lightning-spinner size="small" variant="brand" alternative-text="Loading"></lightning-spinner>
+        </template>
         <ul class="slds-feed__list">
             <!--            <div class="slds-feed reviews-style slds-is-relative slds-scrollable_y">-->
             <template for:each={boatReviews} for:item="boatReview">
@@ -15,13 +15,13 @@
                     <article class="slds-post">
                         <header class="slds-post__header slds-media">
                             <div class="slds-media__figure">
-                                <lightning-avatar src={boatReview.CreatedBy.SmallPhotoUrl}></lightning-avatar>
+                                <lightning-avatar variant="circle" alternative-text={boatReview.CreatedBy.Name} src={boatReview.CreatedBy.SmallPhotoUrl}></lightning-avatar>
                             </div>
 
                             <div class="slds-media__body">
                                 <div class="slds-grid slds-grid_align-spread slds-has-flexi-truncate">
                                     <p>
-                                        <lightning-button title={boatReview.CreatedBy.Name} variant="base" label={boatReview.CreatedBy} onclick={navigateToRecord} data-record-id={boatReview.CreatedBy.Id}></lightning-button>
+                                        <a data-record-id={boatReview.CreatedBy.Id} title={boatReview.CreatedBy.Name} onclick={navigateToRecord}>{boatReview.CreatedBy.Name}</a>
                                         <!-- display creator’s name -->
                                         <span>{boatReview.CreatedBy.CompanyName}</span>
                                     </p>
@@ -34,13 +34,11 @@
                         </header>
                         <div class="slds-text-longform">
                             <p class="slds-text-title_caps">
-                                <lightning-output-field field-name="Name"></lightning-output-field>
+                                <lightning-formatted-rich-text value={boatReview.Comment__c}></lightning-formatted-rich-text>
                             </p>
-                            <lightning-formatted-rich-text value={boatReview.Comment__c}></lightning-formatted-rich-text>
-
                         </div>
                         <!-- display five star rating on readonly mode -->
-                        <c-five-star-rating></c-five-star-rating>
+                        <c-five-star-rating read-only="true" value={boatReview.Rating__c}></c-five-star-rating>
                     </article>
                 </li>
             </template>
