@@ -20,7 +20,7 @@ export default class FiveStarRating extends LightningElement {
   isRendered;
 
   //getter function that returns the correct class depending on if it is readonly
-  starClass() {
+  get starClass() {
       return this.readOnly ? READ_ONLY_CLASS : EDITABLE_CLASS;
   }
 
@@ -38,8 +38,8 @@ export default class FiveStarRating extends LightningElement {
   //display a toast with error message if there is an error loading script
   loadScript() {
         Promise.all([
-          loadStyle(this, leaflet + '/leaflet.css'),
-          loadScript(this, leaflet + '/leaflet.js')
+          loadStyle(this, fivestar + '/rating.css'),
+          loadScript(this, fivestar + '/rating.js')
         ])
             .then(() => {
                 console.log('>> js and css loaded');
