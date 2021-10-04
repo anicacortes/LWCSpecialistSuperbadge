@@ -42,11 +42,9 @@ export default class FiveStarRating extends LightningElement {
           loadScript(this, fivestar + '/rating.js')
         ])
             .then(() => {
-                console.log('>> js and css loaded');
                 this.initializeRating();
             })
             .catch((error) => {
-                console.log(error);
                 const event = new ShowToastEvent({
                     title: ERROR_TITLE,
                     variant: ERROR_VARIANT

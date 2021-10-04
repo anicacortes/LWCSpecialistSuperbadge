@@ -21,8 +21,6 @@ export default class BoatsNearMe extends LightningElement {
     @wire(getBoatsByLocation, {latitude: '$latitude', longitude: '$longitude', boatTypeId: '$boatTypeId'})
     wiredBoatsJSON({error, data}) {
         if(data) {
-            console.log('>> result from apex location:');
-            console.log(data);
             this.createMapMarkers(data);
         }
         else {
@@ -37,7 +35,6 @@ export default class BoatsNearMe extends LightningElement {
 
     renderedCallback() {
         if(!this.isRendered) {
-            console.log('>> Rendered true');
             this.isLoading = true;
             this.isRendered = true;
             this.getLocationFromBrowser();
@@ -46,13 +43,10 @@ export default class BoatsNearMe extends LightningElement {
 
     getLocationFromBrowser() {
         if(navigator.geolocation) {
-            console.log('>> location from browser');
             navigator.geolocation.getCurrentPosition(position => {
                  // Get the Latitude and Longitude from Geolocation API
                 this.latitude = position.coords.latitude;
                 this.longitude = position.coords.longitude;
-                console.log(this.latitude);
-                console.log(this.longitude);
             })
         }
     }
@@ -60,9 +54,6 @@ export default class BoatsNearMe extends LightningElement {
 
 
     createMapMarkers(boatData) {
-        // const newMarkers = boatData.map(boat => {...});
-        // newMarkers.unshift({...});
-
         for(var i = 0; i < boatData.length; i++) {
             var newMarker = {
                 location: {
@@ -85,7 +76,6 @@ export default class BoatsNearMe extends LightningElement {
         };
 
         this.mapMarkers.unshift(firstElement);
-        console.log(this.mapMarkers);
 
         this.isLoading = false;
     }

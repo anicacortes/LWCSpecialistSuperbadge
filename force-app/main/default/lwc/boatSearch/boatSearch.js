@@ -8,7 +8,6 @@ export default class BoatSearch extends NavigationMixin(LightningElement) {
 
     // Handles loading event
     handleLoading() {
-        console.log('parent-spinner true');
         this.isLoading = true;
     }
 
@@ -19,22 +18,8 @@ export default class BoatSearch extends NavigationMixin(LightningElement) {
 
     // This custom event comes from the form (child)
     searchBoats(event) {
-        console.log('>> search boats from parent');
-        console.log(event.detail.boatTypeId);
         this.isLoading = true;
         this.template.querySelector('c-boat-search-results').searchBoats(event.detail.boatTypeId);
-        //searchBoats
-        /*getBoats({boatTypeId: event.detail.boatTypeId})
-            .then(result => {
-                console.log('success');
-                console.log(result);
-                //const eventLoading
-                this.isLoading = false;
-            })
-            .catch(error => {
-                console.log('error');
-                this.isLoading = false;
-            })*/
     }
 
     createNewBoat() {

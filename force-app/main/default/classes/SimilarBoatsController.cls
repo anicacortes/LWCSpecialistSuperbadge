@@ -10,8 +10,7 @@ public class SimilarBoatsController {
     //visualforce page controller
     public SimilarBoatsController() {
         Id boatId = ApexPages.currentPage().getParameters().get('id');
-        System.debug('boatId: ' + boatId);
-        boat = (boatId == null) ? new Boat__c() : 
+        boat = (boatId == null) ? new Boat__c() :
         [SELECT Id, Name, BoatType__c, Length__c, Picture__c, Price__c, Year_Built__c FROM Boat__c WHERE Id = :boatId];
     }
 

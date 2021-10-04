@@ -48,7 +48,6 @@ export default class SimilarBoats extends NavigationMixin(LightningElement) {
             type: 'standard__recordPage',
             attributes: {
                 recordId: event.detail.boatId,
-                //recordId: event.target.dataset.recordId,
                 objectApiName: 'Boat__c',
                 actionName: 'view'
             }

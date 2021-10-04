@@ -23,7 +23,6 @@ const COLUMNS = [
 
 export default class BoatSearchResults extends LightningElement {
 
-//spinner here?
 
     @track boats = [];
     selectedBoatId;
@@ -38,7 +37,6 @@ export default class BoatSearchResults extends LightningElement {
     @wire(getBoats, { boatTypeId : '$boatTypeId'})
     wiredBoats({data, error}) {
         if(data) {
-            console.log('>> Got all boats');
             this.boats = data;
         }
         else {
@@ -52,8 +50,6 @@ export default class BoatSearchResults extends LightningElement {
     // uses notifyLoading
     @api
     searchBoats(boatTypeId) {
-        console.log('>> search boats in child');
-        console.log(boatTypeId);
         this.boatTypeId = boatTypeId;
         this.isLoading = false;
         this.notifyLoading(this.isLoading);
@@ -62,22 +58,16 @@ export default class BoatSearchResults extends LightningElement {
     // this public function must refresh the boats asynchronously
     // uses notifyLoading
     async refresh() {
-        console.log('>> loading = true');
         this.isLoading = true;
         this.notifyLoading(this.isLoading);
         await refreshApex(this.boats);
         this.isLoading = false;
-        console.log('>> loading = false');
         this.notifyLoading(this.isLoading);
 
     }
 
     // this function must update selectedBoatId and call sendMessageService
     updateSelectedTile(event) {
-        console.log('>> parent: boat selected');
-        console.log(event.detail);
-        console.log(event.target);
-
         this.selectedBoatId = event.detail.boatId;
         this.sendMessageService(this.selectedBoatId);
     }
@@ -96,11 +86,9 @@ export default class BoatSearchResults extends LightningElement {
     async handleSave(event) {
         // notify loading
         const updatedFields = event.detail.draftValues;
-        console.log(updatedFields);
         // Update the records via Apex
         updateBoatList({data: updatedFields})
             .then((result) => {
-                console.log('success updating');
                 const event = new ShowToastEvent({
                     title: SUCCESS_TITLE,
                     message: MESSAGE_SHIP_IT,
@@ -110,9 +98,7 @@ export default class BoatSearchResults extends LightningElement {
                 this.refresh();
             })
             .catch(error => {
-                console.log('error updating');
-                console.log(error);
-                const event = new ShowToastEvent({
+               const event = new ShowToastEvent({
                     title: ERROR_TITLE,
                     variant: ERROR_VARIANT
                 });
